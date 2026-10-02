@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TruthLens | Fake News Detector</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+
+        <div class="logo">
+            <span class="logo-icon">✦</span>
+            TruthLens
+        </div>
+
+        <div class="nav-links">
+            <a href="#detector">Detector</a>
+            <a href="#how-it-works">How it works</a>
+            <a href="#about">About</a>
+        </div>
+
+    </nav>
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <div class="badge">
+            <span>●</span> AI-POWERED NEWS ANALYSIS
+        </div>
+
+        <h1>
+            Don't just read it.<br>
+            <span>Verify it.</span>
+        </h1>
+
+        <p class="hero-text">
+            Analyze news content using Machine Learning and Natural Language
+            Processing to identify potentially misleading information.
+        </p>
+
+    </section>
+
+
+    <!-- Detector Section -->
+    <section class="detector-section" id="detector">
+
+        <div class="detector-card">
+
+            <!-- Card Header -->
+            <div class="card-header">
+
+                <div>
+                    <h2>Analyze a News Article</h2>
+
+                    <p>
+                        Enter the headline and full news article below.
+                    </p>
+                </div>
+
+                <div class="status">
+                    <span></span>
+                    MODEL ONLINE
+                </div>
+
+            </div>
+
+
+            <!-- Prediction Form -->
+            <form action="/predict" method="POST">
+
+                <!-- Headline -->
+                <div class="input-group">
+
+                    <label for="title">
+                        News Headline
+                    </label>
+
+                    <textarea
+                        id="title"
+                        name="title"
+                        placeholder="Enter the news headline..."
+                        required>{{ title if title else '' }}</textarea>
+
+                </div>
+
+
+                <!-- Article -->
+                <div class="input-group">
+
+                    <label for="article">
+                        News Article
+                    </label>
+
+                    <textarea
+                        id="article"
+                        name="article"
+                        placeholder="Paste the complete news article here..."
+                        required>{{ article if article else '' }}</textarea>
+
+                </div>
+
+
+                <!-- Input Footer -->
+                <div class="input-footer">
+
+                    <span>
+                        ML + NLP Analysis
+                    </span>
+
+                    <span>
+                        WELFake Dataset
+                    </span>
+
+                </div>
+
+
+                <!-- Analyze Button -->
+                <button type="submit" class="analyze-btn">
+
+                    <span>
+                        Analyze News
+                    </span>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </button>
+
+            </form>
+
+
+            <!-- Result -->
+            {% if result is defined %}
+
+            <div class="result-card">
+
+                <div class="result-top">
+
+                    <div>
+
+                        <p class="result-label">
+                            ANALYSIS RESULT
+                        </p>
+
+
+                        {% if prediction == 0 %}
+
+                            {% set result_class = "fake-result" %}
+
+                        {% else %}
+
+                            {% set result_class = "real-result" %}
+
+                        {% endif %}
+
+
+                        <h2 class="prediction {{ result_class }}">
+                            {{ result }}
+                        </h2>
+
+                    </div>
+
+
+                    <div class="result-icon">
+
+                        {% if prediction == 1 %}
+
+                            ✓
+
+                        {% else %}
+
+                            !
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- Confidence -->
+                <div class="confidence-section">
+
+                    <div class="confidence-heading">
+
+                        <span>
+                            Model Confidence
+                        </span>
+
+                        <strong>
+                            {{ confidence }}%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar"
+                            style="width: {{ confidence }}%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Consistency -->
+                <div class="consistency-result">
+
+                    <span>
+                        Headline–Article Consistency
+                    </span>
+
+                    <strong>
+                        Calculated by V4 Model
+                    </strong>
+
+                </div>
+
+
+                <!-- Disclaimer -->
+                <div class="disclaimer">
+
+                    ⚠ This is an ML-based prediction, not a guarantee of
+                    factual accuracy.
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- How It Works -->
+    <section class="how-section" id="how-it-works">
+
+        <div class="section-heading">
+
+            <p class="small-title">
+                HOW IT WORKS
+            </p>
+
+            <h2>
+                From words to <span>insight.</span>
+            </h2>
+
+            <p>
+                Our system processes your input through a machine learning
+                pipeline to generate a classification.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+            <!-- Step 1 -->
+            <div class="step">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <h3>
+                    Input
+                </h3>
+
+                <p>
+                    Enter the news headline and complete article into
+                    the detector.
+                </p>
+
+            </div>
+
+
+            <!-- Step 2 -->
+            <div class="step">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <h3>
+                    Process
+                </h3>
+
+                <p>
+                    Headline and article are converted into numerical
+                    features using TF-IDF.
+                </p>
+
+            </div>
+
+
+            <!-- Step 3 -->
+            <div class="step">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <h3>
+                    Compare
+                </h3>
+
+                <p>
+                    The system calculates the consistency between the
+                    headline and article.
+                </p>
+
+            </div>
+
+
+            <!-- Step 4 -->
+            <div class="step">
+
+                <div class="step-number">
+                    04
+                </div>
+
+                <h3>
+                    Classify
+                </h3>
+
+                <p>
+                    Logistic Regression analyzes the combined features
+                    and generates a prediction.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- About Section -->
+    <section class="about" id="about">
+
+        <div>
+
+            <p class="small-title">
+                ABOUT THE PROJECT
+            </p>
+
+            <h2>
+                Built with Machine Learning.
+            </h2>
+
+            <p>
+                TruthLens is an academic Fake News Detection project that
+                combines Natural Language Processing, TF-IDF feature
+                extraction, headline–article consistency analysis and
+                Logistic Regression.
+            </p>
+
+        </div>
+
+
+        <div class="tech-stack">
+
+            <div>
+                Python
+            </div>
+
+            <div>
+                Flask
+            </div>
+
+            <div>
+                NLP
+            </div>
+
+            <div>
+                TF-IDF
+            </div>
+
+            <div>
+                Scikit-learn
+            </div>
+
+            <div>
+                WELFake
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="logo">
+
+            <span class="logo-icon">
+                ✦
+            </span>
+
+            TruthLens
+
+        </div>
+
+
+        <p>
+            Machine Learning Based Fake News Detection
+        </p>
+
+
+        <p class="copyright">
+            © 2026 TruthLens
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
